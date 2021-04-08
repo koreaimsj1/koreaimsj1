@@ -1,0 +1,51 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    # 서비스 이름
+    name: JSJ
+  profiles:
+    active: default
+  servlet:
+  #multipart 파일처리 조건
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  #database 접속 정보
+  datasource:
+         #jdbc:mysql://엔드포인트/데이터베이스?옵션...
+    url: jdbc:mysql://database-1.crckvbsekndl.ap-northeast-2.rds.amazonaws.com/TeamProject?useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true
+    username: admin
+    password: password123!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true # 데이터처리할 대 SQL문을 보여줌
+    generate-ddl: true # 클래스 정의에 따른 테이블 및 데이터베이스 객체 생성     
+    properties: # 서버프로그램 설정 시작
+      hibernate:
+        '[generate_statistics]': true # 통계정보
+        '[order_inserts]': true
+        '[order_updates]': true
+        jdbc: 
+          '[batch_size]': 5     # 서버프로그램 설정 jpa 종료
+eureka:
+  client:
+     service-url:
+       # 유레카의 로컬 ip 주소
+       defaultZone: http://192.168.0.38:8761/eureka/
+  instance:
+    # 본인 서비스의 로컬 ip 주소
+    hostname: 192.168.0.38
+    
+---     
+spring:
+  profiles: prod
+eureka:
+  client:
+    service-url:
+      # 유레카의 ec2 주소
+      default-zone: http://ec2-15-164-220-206.ap-northeast-2.compute.amazonaws.com:8761/eureka
+  instance:
+    # 본인 서비스의 ec2 주소 서비스가 실행되는 ec2주소
+    hostname: ec2-15-164-220-206.ap-northeast-2.compute.amazonaws.com
